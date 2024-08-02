@@ -1,0 +1,14 @@
+[font]
+size = 10.0
+
+[[keyboard.bindings]]
+action = "ScrollLineUp"
+key = "E"
+mode = "~Alt"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "ScrollLineDown"
+key = "Y"
+mode = "~Alt"
+mods = "Control"
