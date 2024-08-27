@@ -5,15 +5,15 @@ return {
     'williamboman/mason-lspconfig.nvim',
     'nvim-telescope/telescope.nvim',
     'j-hui/fidget.nvim',
+    'WhoIsSethDaniel/mason-tool-installer.nvim',
   },
   config = function()
-    local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
-    capabilities.textDocument.completion.completionItem.snippetSupport = true
+    
     on_attach = (function(client, bufnr)
       local opts = { buffer = bufnr }
       vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
       --vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-      vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+      vim.keymap.set('n', '<C-k>', vim.lsp.buf.hover, opts)
       vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
       vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
       vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
@@ -23,6 +23,12 @@ return {
       vim.keymap.set('n', '<space>kf', function()
         vim.lsp.buf.format { async = true }
       end, { buffer = bufnr })
+
+
+      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+      vim.lsp.handlers.hover, {
+        border = "single",
+      })
 
       vim.keymap.set("n", 'gr', require('telescope.builtin').lsp_references, opts)
       vim.keymap.set("n", 'gd', require('telescope.builtin').lsp_definitions, opts)
@@ -37,17 +43,32 @@ return {
       vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
       vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
       vim.diagnostic.config ({
-        float = { border = "rounded" }
+        float = { border = "single" }
       })
 
-      -- doesnt update the floatboarder for everyting
-      -- vim.api.nvim_set_hl(0, 'FloatBorder', {fg='#9a8d7a'})
     end)
 
-    -- require('lspconfig.ui.windows').default_options = {
-    --   border = "rounder"
-    -- }
+    -- Change the Diagnostic symbols in the sign column (gutter)
+    -- (not in youtube nvim video)
+    local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
+    for type, icon in pairs(signs) do
+      local hl = "DiagnosticSign" .. type
+      vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+    end
 
+    vim.lsp.handlers["textDocument/signature_help"] = vim.lsp.with(
+    vim.lsp.handlers.signature_help, {
+      border = "single"
+    })
+
+    require('lspconfig.ui.windows').default_options = {
+      border = "single"
+    }
+
+    local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+    capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+    local mason_tool_installer = require("mason-tool-installer")
     require('mason').setup({})
     require('mason-lspconfig').setup({
       ensure_installed = { 'tsserver', 'rust_analyzer', 'clangd', 'volar', 'lua_ls', 'omnisharp' },
@@ -76,12 +97,22 @@ return {
         clangd = function()
           require('lspconfig').clangd.setup({
             on_attach = function(client, bufnr)
-              client.server_capabilities.signatureHelpProvider = false
+              client.server_capabilities.signatureHelpProvider = true
               on_attach(client, bufnr)
             end,
             capabilities = capabilities,
+            cmd = {'clangd', '--function-arg-placeholders=false'},
           })
         end,
+      }
+    })
+
+    mason_tool_installer.setup({
+      ensure_installed = {
+        "prettier",
+        "stylua",
+        "isort",
+        "black",
       }
     })
   end,

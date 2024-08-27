@@ -18,3 +18,8 @@ vim.o.shiftwidth = 8
 vim.o.softtabstop = 8
 vim.o.foldmethod = 'indent'
 vim.o.foldenable = false
+vim.opt.conceallevel = 1
+vim.cmd("let g:netrw_liststyle = 3")
+
+vim.opt.splitright = true --split vertical window to right
+vim.opt.splitbelow = true --split horizontal window to bottom%

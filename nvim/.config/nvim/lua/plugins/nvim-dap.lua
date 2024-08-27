@@ -7,15 +7,31 @@ return {
     'jay-babu/mason-nvim-dap.nvim',
   },
   config = function()
-    local dap = require 'dap'
-    local dapui = require 'dapui'
+    local dap, dapui = require("dap"), require("dapui")
 
+    dap.listeners.before.attach.dapui_config = function()
+      dapui.open()
+    end
+    dap.listeners.before.launch.dapui_config = function()
+      dapui.open()
+    end
+    dap.listeners.before.event_terminated.dapui_config = function()
+      dapui.close()
+    end
+    dap.listeners.before.event_exited.dapui_config = function()
+      dapui.close()
+    end
+
+    vim.keymap.set('n', '<leader>de', dapui.eval, { desc = 'Open element in floating window' })
+    vim.keymap.set('n', '<leader>df', dapui.float_element, { desc = 'Open element in floating window' })
     vim.keymap.set('n', '<F5>', dap.continue, { desc = 'Debug: Start/Continue' })
-    vim.keymap.set('n', '<F1>', dap.step_into, { desc = 'Debug: Step Into' })
-    vim.keymap.set('n', '<F2>', dap.step_over, { desc = 'Debug: Step Over' })
-    vim.keymap.set('n', '<F3>', dap.step_out, { desc = 'Debug: Step Out' })
-    vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { desc = 'Debug: Toggle Breakpoint' })
-    vim.keymap.set('n', '<leader>B', function()
+    vim.keymap.set('n', '<F10>', dap.step_over, { desc = 'Debug: Step Over' })
+    vim.keymap.set('n', '<F11>', dap.step_into, { desc = 'Debug: Step Into' })
+    vim.keymap.set('n', '<F12>', dap.step_out, { desc = 'Debug: Step Out' })
+    vim.keymap.set('n', '<F6>', dap.terminate, { desc = 'Debug: Terminate' })
+    vim.keymap.set('n', '<F7>', dapui.toggle, { desc = 'Toggle Dap ui' })
+    vim.keymap.set('n', '<leader>db', dap.toggle_breakpoint, { desc = 'Debug: Toggle Breakpoint' })
+    vim.keymap.set('n', '<leader>dB', function()
       dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
     end, { desc = 'Debug: Set Breakpoint' })
 
@@ -36,27 +52,6 @@ return {
       },
     }
 
-    vim.keymap.set('n', '<F7>', dapui.toggle, { desc = 'Debug: See last session result.' })
-
-    dap.listeners.after.event_initialized['dapui_config'] = dapui.open
-    dap.listeners.before.event_terminated['dapui_config'] = dapui.close
-    dap.listeners.before.event_exited['dapui_config'] = dapui.close
-
-    -- dap.listeners.before.attach.dapui_config = function()
-    --   print "dap ui open"
-    --   dapui.open()
-    -- end
-    -- dap.listeners.before.launch.dapui_config = function()
-    --   dapui.open()
-    -- end
-    -- dap.listeners.before.event_terminated.dapui_config = function()
-    --   print "dap ui close"
-    --   dapui.close()
-    -- end
-    -- dap.listeners.before.event_exited.dapui_config = function()
-    --   dapui.close()
-    -- end
-
     dap.adapters.cppdbg = {
       id = 'cppdbg',
       type = 'executable',
@@ -72,7 +67,7 @@ return {
           return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
         end,
         cwd = '${workspaceFolder}',
-        miDebuggerPath = '/home/guru/gits/sudogdb.sh',
+        -- miDebuggerPath = '/home/guru/gits/sudogdb.sh',
         stopAtEntry = true,
       },
       -- {
