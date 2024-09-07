@@ -38,10 +38,13 @@ return {
 
             -- Affects diagnostics floating window
             -- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-            vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#9a8d7a" })
-
             -- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#262626" })
             -- vim.api.nvim_set_hl(0, 'FloatBorder', { fg='#9a8d7a', bg = "#262626" })
+            vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#9a8d7a" })
+
+            vim.diagnostic.config({
+                float = { border = "single" },
+            })
 
             -- set telescope window colors
             local colors = require("catppuccin.palettes").get_palette()

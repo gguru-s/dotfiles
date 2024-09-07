@@ -39,9 +39,6 @@ return {
             vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
             vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
             vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
-            vim.diagnostic.config({
-                float = { border = "single" },
-            })
         end
 
         -- Change the Diagnostic symbols in the sign column (gutter)
@@ -66,7 +63,7 @@ return {
         local mason_tool_installer = require("mason-tool-installer")
         require("mason").setup({})
         require("mason-lspconfig").setup({
-            ensure_installed = { "tsserver", "rust_analyzer", "clangd", "volar", "lua_ls", "omnisharp" },
+            ensure_installed = { "tsserver", "rust_analyzer", "clangd", "volar", "lua_ls", "csharp_ls" },
             handlers = {
                 function(server_name) -- default handler (optional)
                     require("lspconfig")[server_name].setup({
