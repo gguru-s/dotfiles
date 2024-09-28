@@ -1,7 +1,9 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
+SETUVAR --export COMP_WORDBREAKS:/\x22\x5c\x27\x3e\x3c\x3b\x7c\x26\x28
 SETUVAR --export --path PATH:/usr/local/include\x1e/usr/local/include\x1e/usr/local/sbin\x1e/usr/local/bin\x1e/usr/bin\x1e/usr/lib/emscripten\x1e/usr/bin/site_perl\x1e/usr/bin/vendor_perl\x1e/usr/bin/core_perl
 SETUVAR --export QT_QPA_PLATFORMTHEME:qt5ct
+SETUVAR --export RANGER_LOAD_DEFAULT_RC:FALSE
 SETUVAR VISUAL:nvim
 SETUVAR --export WLR_NO_HARDWARE_CURSORS:1
 SETUVAR __fish_initialized:3400

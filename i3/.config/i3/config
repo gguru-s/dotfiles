@@ -157,7 +157,7 @@ bindsym $mod+v split v
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
+# bindsym $mod+s layout stacking
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
@@ -211,6 +211,18 @@ bindsym $mod+Shift+7 move container to workspace number $ws7
 bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
+
+# Make the currently focused window a scratchpad
+bindsym $mod+Shift+s move scratchpad
+
+# Show the first scratchpad window
+bindsym $mod+s scratchpad show
+
+bindsym $mod+z [class="Alacritty"] scratchpad show
+bindsym $mod+c [class="discord"] scratchpad show
+
+# Show the sup-mail scratchpad window, if any.
+# bindsym mod4+s [title="^Sup ::"] scratchpad show
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
