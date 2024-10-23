@@ -19,7 +19,7 @@ vim.o.softtabstop = 8
 vim.o.foldmethod = "indent"
 vim.o.foldenable = false
 vim.opt.conceallevel = 1
--- Displays netrw in tree style
+-- makes netrw display folders in tree style
 -- vim.cmd("let g:netrw_liststyle = 3")
 
 vim.opt.splitright = true --split vertical window to right
