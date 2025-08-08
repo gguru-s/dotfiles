@@ -83,7 +83,7 @@ return {
         cmp.setup.cmdline("/", {
             -- mapping = cmp.mapping.preset.cmdline(),
             mapping = cmp.mapping.preset.cmdline({
-                ["<CR>"] = {
+                ["<C-l>"] = {
                     c = function(default)
                         if cmp.visible() then
                             return cmp.confirm({ select = true })
@@ -101,7 +101,7 @@ return {
         cmp.setup.cmdline(":", {
             -- mapping = cmp.mapping.preset.cmdline(),
             mapping = cmp.mapping.preset.cmdline({
-                ["<CR>"] = {
+                ["<C-l>"] = {
                     c = function(default)
                         if cmp.visible() then
                             return cmp.confirm({ select = true })

@@ -1,9 +1,11 @@
 {
     "layer": "top", // Waybar at top layer
     // "position": "bottom", // Waybar position (top|bottom|left|right)
-    "height": 20, // Waybar height (to be removed for auto height)
+    "height": 0, // Waybar height (to be removed for auto height)
+    "output": "HDMI-A-1",
+    //"output": "DP-2",
     // "width": 1280, // Waybar width
-	"margin-top": 6,
+	"margin-top": 4,
 	"margin-left": 6,
 	"margin-right": 6,
     "spacing": 4, // Gaps between modules (4px)
@@ -91,14 +93,14 @@
     },
     "clock": {
         // "timezone": "America/New_York",
-        // "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         // "format-alt": "{:%Y-%m-%d}",
 		"format": "{:%d %B  %H:%M}",
-		"on-click-right": "merkuro-calendar"
+		"on-click-right": "gnome-calendar"
     },
     "cpu": {
         "format": "{usage}  ",
-        "tooltip": false
+//        "tooltip": false
     },
     "memory": {
         "format": "{}  "
@@ -164,7 +166,7 @@
         "on-click": "pavucontrol"
     },
     "custom/media": {
-        "format": "{icon} {}",
+        "format": "{icon}  {0}",
         "return-type": "json",
         "max-length": 40,
         "format-icons": {

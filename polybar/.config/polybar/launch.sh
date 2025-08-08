@@ -12,7 +12,7 @@ if type "xrandr"; then
                                                                                    
         tray_pos=""                                                                
         if [ "$status" == "primary" ]; then                                        
-            tray_pos="left"                                                       
+            tray_pos="right"                                                       
         fi 
 
         # Set the dpi of the monitor for each bar. HAve to figure out the i3 gaps border
@@ -23,7 +23,7 @@ if type "xrandr"; then
         fi
 
         if [ "$mon" == "HDMI-0" ]; then
-            tray_pos="left"
+            tray_pos="right"
         else
             tray_pos=""
         fi

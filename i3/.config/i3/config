@@ -61,7 +61,11 @@ gaps inner 0
 gaps top 28 
 gaps bottom 0
 
-for_window [class="^.*"] border pixel 1 
+popup_during_fullscreen smart
+
+for_window [class="^.*"] border pixel 0 
+# for_window [class="^.*"] title_window_icon yes
+# for_window [class="^.*"] title_window_icon padding 5px
 for_window [class="awakened-poe-trade"] floating enabled
 for_window [class="Pavucontrol"] floating enabled
 for_window [class="qasmixer"] floating enabled
@@ -69,10 +73,13 @@ for_window [class="Mate-calc"] floating enabled
 for_window [class="steam_app_238960"] floating enabled, resize set 2560 1440
 # for_window [class=".*"] title_format "%class"
 for_window [class="firefox"] title_format "%class"
+for_window [all] title_format "%class"
 #for_window [class="steam_app_238960"] resize set 2560 1440
+for_window [class="qasmixer"] floating enabled, resize set 716 541 
 
 # class                 border  backgr. text    indicator child_border
-client.focused          #7c6f64 #3c3836 #ebdbb2 #7c6f64   #7c6f64       
+# client.focused          #7c6f64 #3c3836 #ebdbb2 #7c6f64   #7c6f64       
+client.focused          #595959 #3c3836 #ebdbb2 #595959   #595959       
 client.focused_inactive #333333 #32302f #ebdbb2 #484e50   #000000
 client.unfocused        #333333 #222222 #888888 #292d2e   #000000
 client.urgent           #2f343a #900000 #ffffff #900000   #900000

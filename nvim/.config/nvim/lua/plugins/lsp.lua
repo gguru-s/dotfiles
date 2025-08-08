@@ -100,6 +100,10 @@ return {
             border = "single",
         })
 
+        vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.buf.hover, {
+            border = "single",
+        })
+
         vim.lsp.handlers["textDocument/signature_help"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
             border = "single",
         })
@@ -114,7 +118,7 @@ return {
         local mason_tool_installer = require("mason-tool-installer")
         require("mason").setup({})
         require("mason-lspconfig").setup({
-            ensure_installed = { "tsserver", "rust_analyzer", "clangd", "volar", "lua_ls", "omnisharp" },
+            ensure_installed = { "rust_analyzer", "clangd", "lua_ls", "omnisharp" },
             handlers = {
                 function(server_name) -- default handler (optional)
                     require("lspconfig")[server_name].setup({

@@ -14,6 +14,8 @@ return {
 
     config = function()
         local telescope = require("telescope")
+        -- local border = { "▔", "▕", "▁", "▏", "🭽", "🭾", "🭿", "🭼" }
+        local border = { "─", "│", "─", "│", "┌", "┐", "┘", "└" }
         telescope.setup({
             path_display = { "smart" },
             defaults = {
@@ -24,10 +26,16 @@ return {
                     },
                 },
                 border = true,
+                -- borderchars = {
+                --     prompt = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+                --     results = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+                --     preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+                -- },
+                --
                 borderchars = {
-                    prompt = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-                    results = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-                    preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+                    prompt = border,
+                    results = border,
+                    preview = border,
                 },
             },
             pickers = {
