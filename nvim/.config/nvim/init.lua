@@ -1,4 +1,6 @@
 require("config.keymaps")
 require("config.options")
 require("config.autocmds")
+require("config.colors")
+require("config.floating-terminal")
 require("lazy-config")

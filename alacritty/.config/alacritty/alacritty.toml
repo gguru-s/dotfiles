@@ -14,4 +14,4 @@ mode = "~Alt"
 mods = "Control"
 
 [colors.primary]
-background = "#1e1e1e"
+background = "#1c1c1c"

@@ -57,11 +57,13 @@ bindsym Mod1+l exec i3lock -i ~/Downloads/sekiro-lock.png -t
 
 # Gaps
 gaps outer 0
-gaps inner 0 
-gaps top 28 
+gaps inner 0
+gaps top 28
 gaps bottom 0
 
 popup_during_fullscreen smart
+
+for_window [class="cppmenu"] floating enabled
 
 for_window [class="^.*"] border pixel 0 
 # for_window [class="^.*"] title_window_icon yes

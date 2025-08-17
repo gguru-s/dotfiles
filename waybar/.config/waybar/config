@@ -148,19 +148,19 @@
     "pulseaudio": {
         // "scroll-step": 1, // %, can be a float
         "format": "{volume}  {icon} {format_source}",
-        "format-bluetooth": "{volume}  {icon} {format_source}",
-        "format-bluetooth-muted": " {icon} {format_source}",
+        "format-bluetooth": "{volume}  {icon}  {format_source}",
+        "format-bluetooth-muted": " {icon}  {format_source}",
         "format-muted": " {format_source}",
         "format-source": " {volume}  󰍬",
         "format-source-muted": " ",
         "format-icons": {
-            "headphone": "",
+            "headphone": "",
             "hands-free": "",
             "headset": "",
             "phone": "",
             "portable": "",
             "car": "",
-			"alsa_output.pci-0000_00_1f.3.analog-stereo": "󰕾",
+	    "alsa_output.pci-0000_00_1f.3.analog-stereo": "󰕾",
             "default": ["", "", ""]
         },
         "on-click": "pavucontrol"

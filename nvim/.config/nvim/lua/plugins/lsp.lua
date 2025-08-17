@@ -1,188 +1,169 @@
 return {
     "neovim/nvim-lspconfig",
     dependencies = {
-        "williamboman/mason.nvim",
-        "williamboman/mason-lspconfig.nvim",
+        "folke/lazydev.nvim",
+        ft = "lua", -- only load on lua files
+        opts = {
+            library = {
+                -- See the configuration section for more details
+                -- Load luvit types when the `vim.uv` word is found
+                { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+            },
+        },
+
         "nvim-telescope/telescope.nvim",
         "j-hui/fidget.nvim",
-        "WhoIsSethDaniel/mason-tool-installer.nvim",
-        "Hoffs/omnisharp-extended-lsp.nvim",
     },
     config = function()
-        on_attach = function(client, bufnr)
-            local opts = { buffer = bufnr }
+        vim.api.nvim_create_autocmd("LspAttach", {
+            group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+            callback = function(event)
+                local map = function(keys, func, desc, mode)
+                    mode = mode or "n"
+                    vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+                end
 
-            -- if client.server_capabilities.signatureHelpProvider then
-            --     require("lsp-overloads").setup(client, {
-            --         ui = {
-            --             floating_window_above_cur_line = true,
-            --         },
-            --     })
-            -- end
+                map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
+                map("<leader>ca", vim.lsp.buf.code_action, "[G]oto Code [A]ction", { "n", "x" })
+                map("<leader>gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
+                map("<leader>gi", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
+                map("<leader>gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+                map("<leader>gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+                map("gO", require("telescope.builtin").lsp_document_symbols, "Open Document Symbols")
+                map("gW", require("telescope.builtin").lsp_dynamic_workspace_symbols, "Open Workspace Symbols")
+                map("<leader>gt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definition")
+                -- map("<leader>gs", vim.lsp.buf.signature_help, "LSP: signature help")
+                map("K", function()
+                    vim.lsp.buf.hover({
+                        border = "single",
+                    })
+                end, "LSP Hover with rounded look")
 
-            vim.keymap.set("n", "<space>dh", vim.lsp.buf.signature_help, opts)
-            --vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-            vim.keymap.set("n", "<C-k>", vim.lsp.buf.hover, opts)
-            vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, opts)
-            vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, opts)
-            vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, opts)
-            vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, opts)
-            vim.keymap.set({ "n", "v" }, "<space>ca", vim.lsp.buf.code_action, opts)
-            --vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-            -- vim.keymap.set("n", "<space>kf", function()
-            --     vim.lsp.buf.format({ async = true })
-            -- end, { buffer = bufnr })
+                -- Diagnostic keymaps
+                map("[d", vim.diagnostic.goto_prev, "Go to previous diagnostic message")
+                map("]d", vim.diagnostic.goto_next, "Go to next diagnostic message")
+                map("<leader>xf", vim.diagnostic.open_float, "Open floating diagnostic message")
 
-            vim.keymap.set("n", "gr", require("telescope.builtin").lsp_references, opts)
-            -- vim.keymap.set("n", "gd", require("telescope.builtin").lsp_definitions, opts)
-            vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-            vim.keymap.set("n", "gI", require("telescope.builtin").lsp_implementations, opts)
-            vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+                local function client_supports_method(client, method, bufnr)
+                    if vim.fn.has("nvim-0.11") == 1 then
+                        return client:supports_method(method, bufnr)
+                    else
+                        return client.supports_method(method, { bufnr = bufnr })
+                    end
+                end
 
-            -- vim.keymap.set("n", '<leader>D', require('telescope.builtin').lsp_type_definitions, opts)
+                -- The following two autocommands are used to highlight references of the
+                -- word under your cursor when your cursor rests there for a little while.
+                --    See `:help CursorHold` for information about when this is executed
+                --
+                -- When you move your cursor, the highlights will be cleared (the second autocommand).
+                local client = vim.lsp.get_client_by_id(event.data.client_id)
+                if
+                    client
+                    and client_supports_method(
+                        client,
+                        vim.lsp.protocol.Methods.textDocument_documentHighlight,
+                        event.buf
+                    )
+                then
+                    local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
+                    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+                        buffer = event.buf,
+                        group = highlight_augroup,
+                        callback = vim.lsp.buf.document_highlight,
+                    })
 
-            -- Diagnostic keymaps
-            vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
-            vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
-            vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
-            vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
-        end
+                    vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+                        buffer = event.buf,
+                        group = highlight_augroup,
+                        callback = vim.lsp.buf.clear_references,
+                    })
 
-        -- Change the Diagnostic symbols in the sign column (gutter)
-        -- (not in youtube nvim video)
-        local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
-        for type, icon in pairs(signs) do
-            local hl = "DiagnosticSign" .. type
-            vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-        end
+                    vim.api.nvim_create_autocmd("LspDetach", {
+                        group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
+                        callback = function(event2)
+                            vim.lsp.buf.clear_references()
+                            vim.api.nvim_clear_autocmds({ group = "kickstart-lsp-highlight", buffer = event2.buf })
+                        end,
+                    })
+                end
 
-        -- local function setup_lsp_diags()
-        --     vim.lsp.handlers["textDocument/publishDiagnostics"] =
-        --         vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-        --             virtual_text = false,
-        --             signs = true,
-        --             update_in_insert = false,
-        --             underline = true,
-        --         })
-        -- end
+                -- The following code creates a keymap to toggle inlay hints in your
+                -- code, if the language server you are using supports them
+                --
+                -- This may be unwanted, since they displace some of your code
+                if
+                    client
+                    and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf)
+                then
+                    map("<leader>th", function()
+                        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+                    end, "[T]oggle Inlay [H]ints")
+                end
+            end,
+        })
 
-        -- setup_lsp_diags()
-
+        -- Diagnostic Config
+        -- See :help vim.diagnostic.Opts
         vim.diagnostic.config({
+            float = { border = "single" },
+            severity_sort = true,
+            underline = { severity = vim.diagnostic.severity.ERROR },
+            signs = {
+                priority = 100, -- High priority to push it to left column
+                text = {
+                    [vim.diagnostic.severity.ERROR] = "",
+                    [vim.diagnostic.severity.WARN] = "",
+                    [vim.diagnostic.severity.INFO] = "󰋼",
+                    [vim.diagnostic.severity.HINT] = "󰌵",
+                },
+                -- text = {
+                --     [vim.diagnostic.severity.ERROR] = "󰅚 ",
+                --     [vim.diagnostic.severity.WARN] = "󰀪 ",
+                --     [vim.diagnostic.severity.INFO] = "󰋽 ",
+                --     [vim.diagnostic.severity.HINT] = "󰌶 ",
+                -- },
+                texthl = {
+                    [vim.diagnostic.severity.ERROR] = "Error",
+                    [vim.diagnostic.severity.WARN] = "Warn",
+                    [vim.diagnostic.severity.HINT] = "Hint",
+                    [vim.diagnostic.severity.INFO] = "Info",
+                },
+                numhl = {
+                    [vim.diagnostic.severity.ERROR] = "",
+                    [vim.diagnostic.severity.WARN] = "",
+                    [vim.diagnostic.severity.HINT] = "",
+                    [vim.diagnostic.severity.INFO] = "",
+                },
+            },
             virtual_text = false,
         })
+
+        -- local border = { "─", "│", "─", "│", "┌", "┐", "┘", "└" }
+
+        local border = {
+            { "┌", "FloatBorder" },
+            { "─", "FloatBorder" },
+            { "┐", "FloatBorder" },
+            { "│", "FloatBorder" },
+            { "┘", "FloatBorder" },
+            { "─", "FloatBorder" },
+            { "└", "FloatBorder" },
+            { "│", "FloatBorder" },
+        }
+        vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border })
+
+        -- vim.lsp.handlers["textDocument/signatureHelp"] =
+        --     vim.lsp.with(vim.lsp.handlers.signature_help, { border = border })
         --
-        -- local ns = vim.api.nvim_create_namespace("CurlineDiag")
-        -- vim.opt.updatetime = 100
-        -- vim.api.nvim_create_autocmd("LspAttach", {
-        --     callback = function(args)
-        --         vim.api.nvim_create_autocmd("CursorHold", {
-        --             buffer = args.buf,
-        --             callback = function()
-        --                 pcall(vim.api.nvim_buf_clear_namespace, args.buf, ns, 0, -1)
-        --                 local hi = { "Error", "Warn", "Info", "Hint" }
-        --                 local curline = vim.api.nvim_win_get_cursor(0)[1]
-        --                 local diagnostics = vim.diagnostic.get(args.buf, { lnum = curline - 1 })
-        --                 local virt_texts = { { (" "):rep(4) } }
-        --                 for _, diag in ipairs(diagnostics) do
-        --                     virt_texts[#virt_texts + 1] = { diag.message, "Diagnostic" .. hi[diag.severity] }
-        --                 end
-        --                 vim.api.nvim_buf_set_extmark(args.buf, ns, curline - 1, 0, {
-        --                     virt_text = virt_texts,
-        --                     hl_mode = "combine",
-        --                 })
-        --             end,
-        --         })
-        --     end,
+        -- vim.lsp.buf.signature_help({ border = border })
+
+        -- vim.lsp.buf.signature_help({
+        --     border = "single",
         -- })
 
-        vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-            border = "single",
-        })
-
-        vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.buf.hover, {
-            border = "single",
-        })
-
-        vim.lsp.handlers["textDocument/signature_help"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-            border = "single",
-        })
-
-        require("lspconfig.ui.windows").default_options = {
-            border = "single",
-        }
-
-        local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
-        capabilities.textDocument.completion.completionItem.snippetSupport = true
-
-        local mason_tool_installer = require("mason-tool-installer")
-        require("mason").setup({})
-        require("mason-lspconfig").setup({
-            ensure_installed = { "rust_analyzer", "clangd", "lua_ls", "omnisharp" },
-            handlers = {
-                function(server_name) -- default handler (optional)
-                    require("lspconfig")[server_name].setup({
-                        capabilities = capabilities,
-                        on_attach = on_attach,
-                    })
-                end,
-
-                ["lua_ls"] = function()
-                    require("lspconfig").lua_ls.setup({
-                        on_attach = on_attach,
-                        capabilities = capabilities,
-                        settings = {
-                            Lua = {
-                                diagnostics = {
-                                    globals = { "vim" },
-                                },
-                            },
-                        },
-                    })
-                end,
-
-                omnisharp = function()
-                    require("lspconfig").omnisharp.setup({
-                        on_attach = on_attach,
-                        capabilities = capabilities,
-                        handlers = {
-                            ["textDocument/definition"] = require("omnisharp_extended").definition_handler,
-                            ["textDocument/typeDefinition"] = require("omnisharp_extended").type_definition_handler,
-                            ["textDocument/references"] = require("omnisharp_extended").references_handler,
-                            ["textDocument/implementation"] = require("omnisharp_extended").implementation_handler,
-                        },
-                        settings = {
-                            RoslynExtensionsOptions = {
-                                enableDecompilationSupport = true,
-                            },
-                        },
-                    })
-                end,
-
-                clangd = function()
-                    require("lspconfig").clangd.setup({
-                        -- on_attach = function(client, bufnr)
-                        --     client.server_capabilities.signatureHelpProvider = true
-                        --     on_attach(client, bufnr)
-                        -- end,
-                        on_attach = on_attach,
-                        capabilities = capabilities,
-                        cmd = { "clangd", "--function-arg-placeholders=false" },
-                        -- cmd = { "clangd" },
-                    })
-                end,
-            },
-        })
-
-        mason_tool_installer.setup({
-            ensure_installed = {
-                "prettier",
-                "stylua",
-                "isort",
-                "black",
-                "clang-format",
-                "csharpier",
-            },
-        })
+        -- require("lspconfig.ui.windows").default_options = {
+        --     border = "single",
+        -- }
     end,
 }

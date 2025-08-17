@@ -1,5 +1,6 @@
 return {
     "hrsh7th/nvim-cmp",
+    enabled = true,
     dependencies = {
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-nvim-lua",
@@ -24,6 +25,7 @@ return {
         vim.opt.completeopt = { "menu", "menuone", "noinsert" }
         luasnip.config.setup({})
 
+        local border = { "┌", "─", "┐", "│", "┘", "─", "└", "│" }
         cmp.setup({
             preselect = true,
             completion = {
@@ -36,29 +38,31 @@ return {
             },
             window = {
                 completion = {
-                    border = { "┌", "─", "┐", "│", "┘", "─", "└", "│" },
-                    winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
+                    border = border,
+                    winhighlight = "Normal:CmpPmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel",
                 },
                 documentation = {
-                    border = { "┌", "─", "┐", "│", "┘", "─", "└", "│" },
-                    winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
+                    border = border,
+                    winhighlight = "Normal:CmpPmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel",
                 },
             },
-            -- mapping = cmp.mapping.preset.insert({
-            --     ["<C-k>"] = cmp.mapping.select_prev_item(cmp_select),
-            --     ["<C-j>"] = cmp.mapping.select_next_item(cmp_select),
-            --     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-            --     ["<C-f>"] = cmp.mapping.scroll_docs(4),
-            --     ["<C-l>"] = cmp.mapping.confirm({ select = true }),
-            --     ["<C-Space>"] = cmp.mapping.complete(),
-            --     ["<C-e>"] = cmp.mapping.abort(),
-            -- }),
             mapping = cmp.mapping.preset.insert({
+                ["<C-h>"] = cmp.mapping(function(fallback)
+                    if cmp.visible_docs() then
+                        cmp.close_docs()
+                    elseif cmp.visible() then
+                        cmp.open_docs()
+                    else
+                        fallback()
+                    end
+                end),
+                ["<C-k>"] = cmp.mapping.select_prev_item(cmp_select),
+                ["<C-j>"] = cmp.mapping.select_next_item(cmp_select),
                 ["<C-b>"] = cmp.mapping.scroll_docs(-4),
                 ["<C-f>"] = cmp.mapping.scroll_docs(4),
+                ["<C-l>"] = cmp.mapping.confirm({ select = true }),
                 ["<C-Space>"] = cmp.mapping.complete(),
                 ["<C-e>"] = cmp.mapping.abort(),
-                ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
             }),
             sources = cmp.config.sources({
                 { name = "nvim_lsp" },
@@ -77,12 +81,33 @@ return {
                     ellipsis_char = "...",
                 }),
             },
+            view = {
+                docs = {
+                    auto_open = false,
+                },
+            },
         })
 
         -- `/` cmdline setup.
         cmp.setup.cmdline("/", {
             -- mapping = cmp.mapping.preset.cmdline(),
             mapping = cmp.mapping.preset.cmdline({
+                ["<C-k>"] = {
+                    c = function(default)
+                        if cmp.visible() then
+                            return cmp.select_prev_item(cmp_select)
+                        end
+                        default()
+                    end,
+                },
+                ["<C-j>"] = {
+                    c = function(default)
+                        if cmp.visible() then
+                            return cmp.select_next_item(cmp_select)
+                        end
+                        default()
+                    end,
+                },
                 ["<C-l>"] = {
                     c = function(default)
                         if cmp.visible() then
@@ -101,6 +126,22 @@ return {
         cmp.setup.cmdline(":", {
             -- mapping = cmp.mapping.preset.cmdline(),
             mapping = cmp.mapping.preset.cmdline({
+                ["<C-k>"] = {
+                    c = function(default)
+                        if cmp.visible() then
+                            return cmp.select_prev_item(cmp_select)
+                        end
+                        default()
+                    end,
+                },
+                ["<C-j>"] = {
+                    c = function(default)
+                        if cmp.visible() then
+                            return cmp.select_next_item(cmp_select)
+                        end
+                        default()
+                    end,
+                },
                 ["<C-l>"] = {
                     c = function(default)
                         if cmp.visible() then
