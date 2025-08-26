@@ -119,7 +119,7 @@ floating_modifier $mod
 tiling_drag modifier titlebar
 
 # start a terminal
-bindsym $mod+t exec alacritty
+bindsym $mod+t exec kitty
 
 # kill focused window
 bindsym $mod+q kill
@@ -227,7 +227,8 @@ bindsym $mod+Shift+s move scratchpad
 # Show the first scratchpad window
 bindsym $mod+s scratchpad show
 
-bindsym $mod+z [class="Alacritty"] scratchpad show
+# bindsym $mod+z [class="Alacritty"] scratchpad show
+bindsym $mod+z [class="kitty"] scratchpad show
 bindsym $mod+c [class="discord"] scratchpad show
 
 # Show the sup-mail scratchpad window, if any.

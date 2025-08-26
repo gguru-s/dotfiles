@@ -70,7 +70,22 @@ vim.keymap.set("v", ">", ">gv", { desc = "Indent right and reselect" })
 -- Quick file navigation
 -- vim.keymap.set("n", "<leader>ee", ":Explore<CR>", { desc = "Open file explorer" })
 -- vim.keymap.set("n", "<leader>fl", ":find ", { desc = "Find file" })
-
--- vim.api.nvim_set_hl(0, "CursorLine", { bg = "#282828" })
--- vim.api.nvim_set_hl(0, "CursorLine", { bg = "#32302f" })
 vim.api.nvim_set_hl(0, "CursorLine", { bg = "#2a2a2a" })
+
+local function search_string()
+    vim.ui.input({ prompt = "String to search: " }, function(input)
+        if not input or input == "" then
+            return
+        end
+        local current_file = vim.fn.expand("%:p")
+        local cmd = "lgrep " .. vim.fn.shellescape(input) .. " " .. vim.fn.shellescape(current_file)
+        vim.cmd(cmd)
+        vim.cmd("lopen")
+    end)
+end
+vim.keymap.set("n", "<leader>dl", search_string, { desc = "Search string in current file" })
+
+vim.keymap.set("n", "<leader>daa", function()
+    vim.cmd("vsplit")
+    Snacks.picker.grep()
+end, { desc = "Snacks grep in vsplit" })

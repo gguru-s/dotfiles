@@ -34,17 +34,30 @@ return {
             -- vim.api.nvim_set_hl(0, "@function", { fg = "#348989" })
             -- vim.api.nvim_set_hl(0, "@function.method", { fg = "#348989" })
 
-            -- setting normal bg to none make nvim pick bg from terminal
-            -- vim.api.nvim_set_hl(0, "Normal", { bg = "#1e1e1e" })
             vim.api.nvim_set_hl(0, "Normal", { bg = colors.background })
+
+            -- Used to hide the fist level indent guide line,
+            -- this merges the line with the background
+            -- TODO: when the cursor is on the hidden indent line, the character fg color should be the color of the cursor
+            vim.api.nvim_set_hl(0, "Hidden", { fg = colors.background, bg = colors.background })
 
             -- Affects all floating window
             vim.api.nvim_set_hl(0, "NormalFloat", { bg = colors.background })
-            vim.api.nvim_set_hl(0, "BlinkCmpSignatureHelpBorder", { fg = "#545454" })
+            vim.api.nvim_set_hl(0, "BlinkCmpSignatureHelpBorder", { fg = colors.border })
 
-            -- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#262626" })
-            -- vim.api.nvim_set_hl(0, 'FloatBorder', { fg='#9a8d7a', bg = "#262626" })
-            vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#545454" })
+            vim.api.nvim_set_hl(0, "FloatBorder", { fg = colors.border })
+
+            vim.api.nvim_set_hl(0, "SnacksIndentScope", { fg = "#53555a" })
+            vim.api.nvim_set_hl(0, "SnacksIndent", { fg = "#26393d" })
+            vim.api.nvim_set_hl(0, "SnacksPickerBorder", { fg = colors.border })
+            vim.api.nvim_set_hl(0, "SnacksInputBorder", { fg = colors.border })
+
+            vim.api.nvim_set_hl(0, "TabLineFill", { bg = "#1F1F1F" })
+            vim.api.nvim_set_hl(0, "TabLine", { bg = "#1F1F1F" })
+            -- vim.api.nvim_set_hl(0, "TabLineSel", { bg = "#2D2D2D" })
+            -- vim.api.nvim_set_hl(0, "TabLineSel", { bg = "#303030" })
+            vim.api.nvim_set_hl(0, "TabLineSel", { bg = "#3c3c3d" })
+            -- vim.api.nvim_set_hl(0, "CursorLine", { bg = "#2a2a2a" })
         end,
     },
 }

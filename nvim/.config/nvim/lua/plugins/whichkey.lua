@@ -8,7 +8,7 @@ return {
     opts = {
         show_keys = true,
         win = {
-            border = "single",
+            border = "rounded",
         },
     },
 }

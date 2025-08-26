@@ -4,35 +4,146 @@ return {
     enabled = true,
     lazy = false,
     config = function()
+        -- local indentChar = "┊"
+        local indentChar = "┆"
+        -- local indentChar = "▏"
+
         require("snacks").setup({
 
             bigfile = { enabled = true },
             dashboard = { enabled = true },
-            explorer = { enabled = false },
+            explorer = {
+                enabled = true,
+            },
             indent = {
-                enabled = false,
-                char = "▏",
-                -- char = "│",
-                hl = "SnacksIndent",
+                indent = {
+                    priority = 1,
+                    enabled = true,
+                    char = indentChar,
+                    only_scope = false,
+                    hl = {
+                        -- "Hidden",
+                        "SnacksIndent",
+                        "SnacksIndent",
+                        "SnacksIndent",
+                        "SnacksIndent",
+                        "SnacksIndent",
+                        "SnacksIndent",
+                        "SnacksIndent",
+                        "SnacksIndent",
+                    },
+                },
                 scope = {
-                    enabled = false, -- enable highlighting the current scope
+                    enabled = true, -- enable highlighting the current scope
                     priority = 200,
-                    char = "│",
-                    -- char = "▏",
+                    char = indentChar,
                     underline = false, -- underline the start of the scope
                     only_current = false, -- only show scope in the current window
-                    hl = "SnacksIndentScope", ---@type string|string[] hl group for scopes
+                    hl = {
+                        -- "Hidden",
+                        "SnacksIndentScope",
+                        "SnacksIndentScope",
+                        "SnacksIndentScope",
+                        "SnacksIndentScope",
+                        "SnacksIndentScope",
+                        "SnacksIndentScope",
+                        "SnacksIndentScope",
+                        "SnacksIndentScope",
+                    },
                 },
             },
-            input = { enabled = false },
+            input = { enabled = true },
             notifier = {
-                enabled = false,
+                enabled = true,
                 timeout = 3000,
             },
             picker = {
                 enabled = true,
+
+                -- removes the explorer tree indent lines
+                icons = {
+                    tree = {
+                        vertical = "  ",
+                        middle = "  ",
+                        last = "  ",
+                    },
+                },
+
+                layouts = {
+                    default = {
+                        layout = {
+                            backdrop = false,
+                        },
+                    },
+                },
+
                 sources = {
-                    files = { hidden = true },
+                    explorer = {
+                        auto_close = false,
+                        hidden = true,
+                        follow_file = true,
+                        indent = {
+                            enable = false,
+                        },
+                        git_status = false,
+                        layout = {
+                            layout = {
+                                position = "left",
+                                row = 2,
+                                box = "vertical",
+                                width = 0.2,
+                                {
+                                    win = "input",
+                                    height = 1,
+                                    border = "rounded",
+                                },
+                                {
+                                    win = "list",
+                                },
+                            },
+                        },
+                    },
+                    files = {
+                        hidden = true,
+                        ignored = false,
+                        exclude = {
+                            ".git",
+                            ".cache",
+                            "build",
+                        },
+                        layout = {
+                            preset = "default",
+                            layout = {
+                                border = "none",
+                            },
+                        },
+                    },
+                    smart = {
+                        hidden = true,
+                        ignored = false,
+                        exclude = {
+                            ".git",
+                            ".cache",
+                            "build",
+                        },
+                        layout = {
+                            layout = {
+                                backdrop = false,
+                                row = 2,
+                                box = "vertical",
+                                width = 0.4,
+                                min_width = 50,
+                                height = 0.5,
+                                min_height = 30,
+                                {
+                                    win = "input",
+                                    height = 1,
+                                    border = "hpad",
+                                },
+                                { win = "list", border = "rounded" },
+                            },
+                        },
+                    },
                 },
             },
             quickfile = { enabled = true },
@@ -42,14 +153,20 @@ return {
             words = { enabled = true },
             styles = {
                 notification = {
-                    -- wo = { wrap = true } -- Wrap notifications
+                    wo = { wrap = true }, -- Wrap notifications
+                },
+                input = {
+                    position = "float",
+                    relative = "cursor",
+                    b = {
+                        completion = true,
+                    },
                 },
             },
         })
-
-        vim.api.nvim_set_hl(0, "SnacksIndentScope", { fg = "#53555a" })
-        vim.api.nvim_set_hl(0, "SnacksIndent", { fg = "#26393d" })
     end,
+
+    keys = require("config.snacks-keys"),
 
     init = function()
         vim.api.nvim_create_autocmd("User", {
@@ -74,9 +191,9 @@ return {
                     .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
                     :map("<leader>uc")
                 Snacks.toggle.treesitter():map("<leader>uT")
-                Snacks.toggle
-                    .option("background", { off = "light", on = "dark", name = "Dark Background" })
-                    :map("<leader>ub")
+                -- Snacks.toggle
+                --     .option("background", { off = "light", on = "dark", name = "Dark Background" })
+                --     :map("<leader>ub")
                 Snacks.toggle.inlay_hints():map("<leader>uh")
                 Snacks.toggle.indent():map("<leader>ug")
                 Snacks.toggle.dim():map("<leader>uD")

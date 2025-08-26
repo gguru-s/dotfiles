@@ -17,6 +17,7 @@ vim.o.completeopt = "menuone,noselect"
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 vim.o.softtabstop = 4
+vim.o.showtabline = 2
 vim.opt.conceallevel = 1
 vim.opt.undofile = true
 vim.opt.undodir = vim.fn.expand("~/.vim/undodir")
@@ -24,6 +25,8 @@ vim.opt.swapfile = false
 vim.opt.autochdir = false -- Don't auto change directories when openining files
 vim.opt.autoread = true -- Auto reload files changed outside vim
 vim.opt.autowrite = false -- Don't auto save
+
+-- vim.opt.laststatus = 0
 
 vim.o.cursorline = true
 
@@ -56,3 +59,5 @@ vim.opt.splitbelow = true --split horizontal window to bottom%
 
 -- vim.o.winborder = "single"
 vim.opt.fillchars = { eob = " " }
+
+vim.opt.linebreak = true

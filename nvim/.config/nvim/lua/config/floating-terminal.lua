@@ -41,7 +41,7 @@ local function FloatingTerminal()
         row = row,
         col = col,
         style = "minimal",
-        border = "single",
+        border = "rounded",
     })
 
     -- Set transparency for the floating window

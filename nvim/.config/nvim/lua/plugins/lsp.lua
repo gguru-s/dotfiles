@@ -11,7 +11,7 @@ return {
             },
         },
 
-        "nvim-telescope/telescope.nvim",
+        -- "nvim-telescope/telescope.nvim",
         "j-hui/fidget.nvim",
     },
     config = function()
@@ -25,17 +25,9 @@ return {
 
                 map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
                 map("<leader>ca", vim.lsp.buf.code_action, "[G]oto Code [A]ction", { "n", "x" })
-                map("<leader>gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
-                map("<leader>gi", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
-                map("<leader>gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
-                map("<leader>gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-                map("gO", require("telescope.builtin").lsp_document_symbols, "Open Document Symbols")
-                map("gW", require("telescope.builtin").lsp_dynamic_workspace_symbols, "Open Workspace Symbols")
-                map("<leader>gt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definition")
-                -- map("<leader>gs", vim.lsp.buf.signature_help, "LSP: signature help")
                 map("K", function()
                     vim.lsp.buf.hover({
-                        border = "single",
+                        border = "rounded",
                     })
                 end, "LSP Hover with rounded look")
 
@@ -106,23 +98,23 @@ return {
         -- Diagnostic Config
         -- See :help vim.diagnostic.Opts
         vim.diagnostic.config({
-            float = { border = "single" },
+            float = { border = "rounded" },
             severity_sort = true,
             underline = { severity = vim.diagnostic.severity.ERROR },
             signs = {
                 priority = 100, -- High priority to push it to left column
-                text = {
-                    [vim.diagnostic.severity.ERROR] = "",
-                    [vim.diagnostic.severity.WARN] = "",
-                    [vim.diagnostic.severity.INFO] = "󰋼",
-                    [vim.diagnostic.severity.HINT] = "󰌵",
-                },
                 -- text = {
-                --     [vim.diagnostic.severity.ERROR] = "󰅚 ",
-                --     [vim.diagnostic.severity.WARN] = "󰀪 ",
-                --     [vim.diagnostic.severity.INFO] = "󰋽 ",
-                --     [vim.diagnostic.severity.HINT] = "󰌶 ",
+                --     [vim.diagnostic.severity.ERROR] = "",
+                --     [vim.diagnostic.severity.WARN] = "",
+                --     [vim.diagnostic.severity.INFO] = "󰋼",
+                --     [vim.diagnostic.severity.HINT] = "󰌵",
                 -- },
+                text = {
+                    [vim.diagnostic.severity.ERROR] = "󰅚",
+                    [vim.diagnostic.severity.WARN] = "󰀪",
+                    [vim.diagnostic.severity.INFO] = "󰋽",
+                    [vim.diagnostic.severity.HINT] = "󰌶",
+                },
                 texthl = {
                     [vim.diagnostic.severity.ERROR] = "Error",
                     [vim.diagnostic.severity.WARN] = "Warn",
@@ -151,12 +143,18 @@ return {
             { "└", "FloatBorder" },
             { "│", "FloatBorder" },
         }
-        vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border })
+
+        -- WHY DOES NONE OF THE BELOW WORK?
+        -- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border })
 
         -- vim.lsp.handlers["textDocument/signatureHelp"] =
         --     vim.lsp.with(vim.lsp.handlers.signature_help, { border = border })
         --
-        -- vim.lsp.buf.signature_help({ border = border })
+        -- vim.lsp.buf.signature_help({ border = "rounded" })
+        --
+        -- vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+        --     border = "rounded",
+        -- })
 
         -- vim.lsp.buf.signature_help({
         --     border = "single",

@@ -16,7 +16,7 @@ return {
         "nvim-lua/plenary.nvim",
 
         -- see below for full list of optional dependencies 👇
-        "nvim-telescope/telescope.nvim",
+        -- "nvim-telescope/telescope.nvim",
         "nvim-treesitter/nvim-treesitter",
     },
     opts = {

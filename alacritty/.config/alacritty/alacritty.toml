@@ -1,5 +1,6 @@
 [font]
-size = 11.0
+size = 12.0
+normal = {family = "NotoSans Mono"}
 
 [[keyboard.bindings]]
 action = "ScrollLineUp"
@@ -14,4 +15,4 @@ mode = "~Alt"
 mods = "Control"
 
 [colors.primary]
-background = "#1c1c1c"
+background = "#1e1e1e"

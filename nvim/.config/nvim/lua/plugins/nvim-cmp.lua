@@ -25,7 +25,8 @@ return {
         vim.opt.completeopt = { "menu", "menuone", "noinsert" }
         luasnip.config.setup({})
 
-        local border = { "┌", "─", "┐", "│", "┘", "─", "└", "│" }
+        -- local border = { "┌", "─", "┐", "│", "┘", "─", "└", "│" }
+        local border = "rounded"
         cmp.setup({
             preselect = true,
             completion = {
