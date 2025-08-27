@@ -6,17 +6,16 @@ return {
         options = {
             icons_enabled = true,
             theme = "gruvbox-material",
-            -- component_separators = { left = "│", right = "│" },
             component_separators = { left = "", right = "" },
             section_separators = { left = "", right = "" },
         },
         sections = {
-            lualine_a = { "windows" }, -- disable section a
+            lualine_a = { "filename" },
             lualine_b = {}, -- disable section b
-            lualine_c = {}, -- keep only section c
+            lualine_c = {},
             lualine_x = {}, -- disable section x
             lualine_y = {}, -- disable section y
-            lualine_z = { "location" }, -- disable section z
+            lualine_z = { "location" },
         },
         inactive_sections = {
             lualine_a = {},

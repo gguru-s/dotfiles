@@ -79,26 +79,47 @@ return {
 
                 sources = {
                     explorer = {
-                        auto_close = false,
+                        auto_close = true,
                         hidden = true,
                         follow_file = true,
                         indent = {
                             enable = false,
                         },
                         git_status = false,
+                        -- layout = {
+                        --     layout = {
+                        --         position = "left",
+                        --         row = 2,
+                        --         box = "vertical",
+                        --         width = 0.2,
+                        --         {
+                        --             win = "input",
+                        --             height = 1,
+                        --             border = "rounded",
+                        --         },
+                        --         {
+                        --             win = "list",
+                        --         },
+                        --     },
+                        -- },
                         layout = {
                             layout = {
-                                position = "left",
+                                backdrop = false,
+                                position = "float",
                                 row = 2,
                                 box = "vertical",
-                                width = 0.2,
+                                width = 0.4,
+                                min_width = 50,
+                                height = 0.5,
+                                min_height = 30,
                                 {
                                     win = "input",
                                     height = 1,
-                                    border = "rounded",
+                                    border = "hpad",
                                 },
                                 {
                                     win = "list",
+                                    border = "rounded",
                                 },
                             },
                         },
@@ -111,10 +132,27 @@ return {
                             ".cache",
                             "build",
                         },
+                        -- layout = {
+                        --     preset = "default",
+                        --     layout = {
+                        --         border = "none",
+                        --     },
+                        -- },
                         layout = {
-                            preset = "default",
                             layout = {
-                                border = "none",
+                                backdrop = false,
+                                row = 2,
+                                box = "vertical",
+                                width = 0.4,
+                                min_width = 50,
+                                height = 0.5,
+                                min_height = 30,
+                                {
+                                    win = "input",
+                                    height = 1,
+                                    border = "hpad",
+                                },
+                                { win = "list", border = "rounded" },
                             },
                         },
                     },

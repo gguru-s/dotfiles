@@ -84,8 +84,3 @@ local function search_string()
     end)
 end
 vim.keymap.set("n", "<leader>dl", search_string, { desc = "Search string in current file" })
-
-vim.keymap.set("n", "<leader>daa", function()
-    vim.cmd("vsplit")
-    Snacks.picker.grep()
-end, { desc = "Snacks grep in vsplit" })

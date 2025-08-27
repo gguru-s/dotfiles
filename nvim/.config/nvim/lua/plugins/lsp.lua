@@ -143,25 +143,5 @@ return {
             { "└", "FloatBorder" },
             { "│", "FloatBorder" },
         }
-
-        -- WHY DOES NONE OF THE BELOW WORK?
-        -- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = border })
-
-        -- vim.lsp.handlers["textDocument/signatureHelp"] =
-        --     vim.lsp.with(vim.lsp.handlers.signature_help, { border = border })
-        --
-        -- vim.lsp.buf.signature_help({ border = "rounded" })
-        --
-        -- vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-        --     border = "rounded",
-        -- })
-
-        -- vim.lsp.buf.signature_help({
-        --     border = "single",
-        -- })
-
-        -- require("lspconfig.ui.windows").default_options = {
-        --     border = "single",
-        -- }
     end,
 }

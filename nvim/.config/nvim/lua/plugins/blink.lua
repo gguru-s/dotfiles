@@ -1,7 +1,7 @@
 return {
     "saghen/blink.cmp",
     event = "VimEnter",
-    enabled = false,
+    enabled = true,
     version = "1.*",
     dependencies = {
         {
@@ -24,6 +24,7 @@ return {
         blink.setup({
             keymap = {
                 preset = "default",
+                ["<C-h>"] = { "show_documentation", "fallback" },
                 ["<C-k>"] = { "select_prev", "fallback" },
                 ["<C-j>"] = { "select_next", "fallback" },
                 ["<C-l>"] = { "select_and_accept" },
@@ -44,7 +45,7 @@ return {
             },
 
             sources = {
-                default = { "lsp", "path", "snippets", "lazydev" },
+                default = { "lazydev", "lsp", "path", "snippets", "buffer" },
                 providers = {
                     lazydev = { module = "lazydev.integrations.blink", score_offset = 100 },
                     path = {
