@@ -84,3 +84,21 @@ local function search_string()
     end)
 end
 vim.keymap.set("n", "<leader>dl", search_string, { desc = "Search string in current file" })
+
+-- vim.keymap.set("n", "<leader>sr", function()
+--     vim.ui.input({ prompt = "Find: " }, function(find)
+--         if not find or find == "" then
+--             return
+--         end
+--
+--         vim.ui.input({ prompt = "Replace with: " }, function(replace)
+--             if replace == nil then
+--                 return
+--             end
+--
+--             -- Run the substitution command
+--             local cmd = string.format("%%s/%s/%s/gc", find, replace)
+--             vim.cmd(cmd)
+--         end)
+--     end)
+-- end, { desc = "Find and Replace with confirmation" })

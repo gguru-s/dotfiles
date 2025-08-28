@@ -6,7 +6,7 @@ return {
             require("vscode").setup({
                 style = "dark",
                 transparent = true,
-                italic_comments = true,
+                italic_comments = false,
                 italic_inlayhints = true,
                 underline_links = false,
                 disable_nvimtree_bg = true,

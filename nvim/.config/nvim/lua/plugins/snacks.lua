@@ -86,43 +86,43 @@ return {
                             enable = false,
                         },
                         git_status = false,
-                        -- layout = {
-                        --     layout = {
-                        --         position = "left",
-                        --         row = 2,
-                        --         box = "vertical",
-                        --         width = 0.2,
-                        --         {
-                        --             win = "input",
-                        --             height = 1,
-                        --             border = "rounded",
-                        --         },
-                        --         {
-                        --             win = "list",
-                        --         },
-                        --     },
-                        -- },
                         layout = {
                             layout = {
-                                backdrop = false,
-                                position = "float",
+                                position = "left",
                                 row = 2,
                                 box = "vertical",
-                                width = 0.4,
-                                min_width = 50,
-                                height = 0.5,
-                                min_height = 30,
+                                width = 0.2,
                                 {
                                     win = "input",
                                     height = 1,
-                                    border = "hpad",
+                                    border = "rounded",
                                 },
                                 {
                                     win = "list",
-                                    border = "rounded",
                                 },
                             },
                         },
+                        -- layout = {
+                        --     layout = {
+                        --         backdrop = false,
+                        --         position = "float",
+                        --         row = 2,
+                        --         box = "vertical",
+                        --         width = 0.4,
+                        --         min_width = 50,
+                        --         height = 0.5,
+                        --         min_height = 30,
+                        --         {
+                        --             win = "input",
+                        --             height = 1,
+                        --             border = "hpad",
+                        --         },
+                        --         {
+                        --             win = "list",
+                        --             border = "rounded",
+                        --         },
+                        --     },
+                        -- },
                     },
                     files = {
                         hidden = true,
@@ -232,7 +232,7 @@ return {
                 -- Snacks.toggle
                 --     .option("background", { off = "light", on = "dark", name = "Dark Background" })
                 --     :map("<leader>ub")
-                Snacks.toggle.inlay_hints():map("<leader>uh")
+                Snacks.toggle.inlay_hints():map("<leader>ih")
                 Snacks.toggle.indent():map("<leader>ug")
                 Snacks.toggle.dim():map("<leader>uD")
             end,

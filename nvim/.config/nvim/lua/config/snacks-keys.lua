@@ -44,13 +44,13 @@ return {
         desc = "File Explorer",
     },
     -- find
-    {
-        "<leader>fb",
-        function()
-            Snacks.picker.buffers()
-        end,
-        desc = "Buffers",
-    },
+    -- {
+    --     "<leader>fb",
+    --     function()
+    --         Snacks.picker.buffers()
+    --     end,
+    --     desc = "Buffers",
+    -- },
     {
         "<leader>ff",
         function()
@@ -73,7 +73,7 @@ return {
         desc = "Find recent files",
     },
     {
-        "<leader>su",
+        "<leader>uh",
         function()
             Snacks.picker.undo()
         end,
